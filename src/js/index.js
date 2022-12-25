@@ -1,7 +1,20 @@
+import getPayoutCurrencies from "./wsConnection.js";
+let inputValue = document.querySelector("#enterValue");
+console.log(inputValue);
+
+const functionloader = () => {
+  getPayoutCurrencies();
+}
+
+document.addEventListener("DOMContentLoaded", functionloader);
 
 
+const set_base_currency = () => {
+  
+  console.log("Привет" + inputValue.value)
+}
 
-
+export default set_base_currency;
 
 
 // //Chart 

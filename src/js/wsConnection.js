@@ -1,5 +1,7 @@
 import DerivAPIBasic from "https://cdn.skypack.dev/@deriv/deriv-api/dist/DerivAPIBasic";
+import set_base_currency from "./index.js";
 
+const elemUl = document.querySelector("#available_currencies");
 const app_id = 1089; // Replace with your app_id or leave the current test app_id.
 const connection = new WebSocket(
   `wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`
@@ -9,7 +11,7 @@ const api = new DerivAPIBasic({ connection });
 // payout_currencies_request
 
 const payout_currencies_request = {
-  "payout_currencies": 1,
+  payout_currencies: 1,
 };
 
 const payoutCurrenciesResponse = async (res) => {
@@ -26,11 +28,16 @@ const payoutCurrenciesResponse = async (res) => {
   }
 
   if (data.msg_type === "payout_currencies") {
-    console.log(data.payout_currencies);
+    data.payout_currencies.forEach(element => {
+      let elementLi = document.createElement('li');
+      elementLi.textContent = element;
+      elemUl.appendChild(elementLi);
+      elementLi.addEventListener("click", set_base_currency);
+    });
   }
-
   connection.removeEventListener("message", payoutCurrenciesResponse, false);
 };
+
 
 const getPayoutCurrencies = async () => {
   connection.addEventListener("message", payoutCurrenciesResponse);
@@ -38,16 +45,18 @@ const getPayoutCurrencies = async () => {
   //  setInterval(getPayoutCurrencies(), 100000) 
 };
 
-const PayoutCurrencies_button = document.querySelector("#payoutCurrencies");
-PayoutCurrencies_button.addEventListener("click", getPayoutCurrencies);
+export default getPayoutCurrencies;
+
+// const PayoutCurrencies_button = document.querySelector("#payoutCurrencies");
+// PayoutCurrencies_button.addEventListener("click", getPayoutCurrencies);
 
 
 // const exchange_rates_request 
 
-// const exchange_rates_request = {
-//   "exchange_rates": 1,
-//   "base_currency": "USD"
-// }
+const exchange_rates_request = {
+  "exchange_rates": 1,
+  "base_currency": "USD"
+}
 
 // const exchangeRatesResponse = async (res) => {
 //   const data = JSON.parse(res.data);
