@@ -16,7 +16,6 @@ const set_base_currency = () => {
 
 export default set_base_currency;
 
-
 // //Chart 
 
 // let ctx = document.querySelector('#myChart').getContext('2d');
